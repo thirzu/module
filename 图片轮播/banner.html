@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="base.js"></script>
+    <style>
+        * {  margin: 0;  padding: 0;  }
+        #banner{  width: 500px;  height: 500px;  margin: 10px auto;  border: 10px black solid;  position: relative;  overflow: hidden;  }
+        #main_banner{  width: 3000px;  position: relative;  }
+        #banner ul,li{  list-style-type: none;  display: inline-block  }
+        #banner li{  float: left;  display: inline;  }
+        #banner img{  width: 500px;  height: 500px; }
+        #prev_img, #next_img{  color: white;  font-size: 1.5em;  width: 10%;  height: 10%;  background-color: #000;  position: absolute;  cursor: pointer;  opacity: 0.3;  }
+        #prev_img{  left: 0;  top: 45%;  }
+        #next_img{  right: 0;  top: 45%;  }
+        #point{  width: 100%;  position: absolute;  left: 0;  bottom: 0;  text-align: center;  }
+        #point span{  border-radius: 50%;  border: solid black 10px;  display: inline-block;  margin: 2%;  opacity: 0.3;  cursor: pointer;  }
+    </style>
+</head>
+<body>
+<div id="banner">
+    <ul id="main_banner">
+        <li><a href=""> <img src="images/IMG_0137.JPG" alt="" class="here"></a></li>
+        <li><a href=""><img src="images/IMG_0312.JPG" alt=""></a></li>
+        <li><a href=""><img src="images/IMG_0065.JPG" alt=""></a></li>
+        <li><a href=""><img src="images/IMG_0621.JPG" alt=""></a></li>
+    </ul>
+    <button id="prev_img"><<</button>
+    <button id="next_img">>></button>
+    <div id="point"></div>
+</div>
+<script>
+    function Banner() {
+        this.banner = document.getElementById("banner");
+        this.prev_img =document.getElementById("prev_img");
+        this.next_img =document.getElementById("next_img");
+        this.img_list = this.banner.getElementsByTagName("img");
+        this.img_length =  this.img_list.length;
+        this.main_banner = document.getElementById("main_banner");
+        this.img_width = parseInt(getStyle(self.banner,"width"),10);
+        this.point_list = document.getElementById("point");
+        this.target_num = null;
+        this.current_num = null;
+        this.current_left = null;
+        this.move_speed = null;
+        this.timer1 = null;
+        this.timer2 = null;
+    }
+    //初始化操作
+    Banner.prototype.init = function () {
+        var self = this;
+        //为图片和导航点添加data-num属性
+        for(var i = 0, length = self.img_list.length; i < length; i ++){
+            self.img_list[i].dataset.num = i;
+            var a_point = document.createElement("span");
+            self.point_list.appendChild(a_point);  //形成与图片数目相同的导航点
+            self.point_list = document.getElementById("point");
+            self.point = self.point_list.getElementsByTagName("span");
+            self.point[i].dataset.num = i;
+        }
+        self.timer1 = setInterval(function () {self.doInterval();},2500);  //图片正常轮播
+        //给轮播整体添加鼠标事件
+        addEvent(self.banner,"mouseover",function () {
+            clearInterval(self.timer1);
+        });
+        addEvent(self.banner,"mouseout",function () {
+            clearInterval(self.timer1);
+            self.timer1 = setInterval(function () {self.doInterval();},2500);});
+        //给前进后退按钮添加鼠标事件
+        addEvent(self.prev_img,"click",function (event) {
+            if(parseInt(getStyle(self.main_banner,"left"),10)%self.img_width == 0) {
+                clearInterval(self.timer3);
+                self.target_num -= 1;
+                self.current_left = -self.current_num * self.img_width;
+                if (self.target_num > self.img_length - 1) {
+                    self.target_num = 0;
+                }
+                if (self.target_num < 0) {
+                    self.target_num = self.img_length - 1;
+                }
+                self.move_speed = (-self.current_left - self.target_num * self.img_width) / 50;  //图每次移动的距离（负向右，正想左）
+                self.timer3 = setInterval(function () {self.move();}, 5);
+            }
+            })
+        addEvent(self.next_img,"click",function (event) {
+           if(parseInt(getStyle(self.main_banner,"left"),10)%self.img_width == 0){
+                clearInterval(self.timer3);
+               self.target_num += 1;
+               self.current_left = -self.current_num * self.img_width;
+               if(self.target_num > self.img_length - 1){
+                   self.target_num = 0;
+               }
+               if(self.target_num < 0){
+                   self.target_num = self.img_length - 1;
+               }
+               self.move_speed = (-self.current_left - self.target_num * self.img_width)/50;  //图每次移动的距离（负向右，正想左）
+               self.timer3 = setInterval(function () {self.move();},5);
+           }
+        })
+        //给导航点添加鼠标事件
+        for(var i = 0, length = self.point.length; i < length; i++){
+            addEvent(self.point[i],"click",function (event) {
+                var event = event || window.event,
+                        target = event.target || event.srcElement;
+                self.target_num = target.dataset.num - 1;
+                clearInterval(self.timer2);
+                self.doInterval();})
+            addEvent(self.point[i],"mouseover",function (event) {
+                var event = event || window.event,
+                        target = event.target || event.srcElement;
+                self.point[target.dataset.num].style.opacity = "0.6";
+            })
+            addEvent(self.point[i],"mouseout",function (event) {
+                var event = event || window.event,
+                        target = event.target || event.srcElement;
+                self.point[target.dataset.num].style.opacity = "0.3";
+            })
+        }
+    }
+
+    //形成目标图片并移动
+    Banner.prototype.doInterval = function () {
+        var self = this;
+        self.current_num = getByClassName(self.banner,"here")[0].dataset.num;
+        self.target_num += 1;
+        self.current_left = -self.current_num * self.img_width;
+        if(self.target_num > self.img_length - 1){
+        self.target_num = 0;
+    }
+        if(self.target_num < 0){
+            self.target_num = self.img_length - 1;
+        }
+        self.move_speed = (-self.current_left - self.target_num * self.img_width)/50;  //图每次移动的距离（负向右，正想左）
+        clearInterval(self.timer2);
+        self.timer2  = setInterval(function(){self.move();},5);
+    }
+
+    //移动到目标图片
+    Banner.prototype.move = function () {
+        var self = this,
+                left = parseInt(getStyle(self.main_banner,"left"),10);
+        self.current_num = getByClassName(self.banner,"here")[0].dataset.num;
+        if(self.target_num == self.current_num){
+            clearInterval(self.timer2);
+            clearInterval(self.timer3);
+        } else  {
+            self.main_banner.style.left = left + self.move_speed + "px";
+            if( left + self.move_speed + self.target_num * self.img_width == 0){  //到达目标图片位置时改变here类位置
+                for (var i = 0; i < self.img_length; i++) {
+                    removeClass(self.img_list[i], "here");
+                }
+                addClass(self.img_list[self.target_num], "here");
+            }
+        }
+    }
+
+    window.onload = function () {
+        var banner1 = new Banner();
+        banner1.init();
+    }
+</script>
+</body>
+</html>

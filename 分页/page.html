@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #page{
+            margin: 10px;
+        }
+        #page span{
+            border: 1px solid black;
+            display: inline-block;
+            padding: 10px;
+            margin: 10px;
+            cursor: pointer;
+        }
+        #page span.current_page, #page span:hover{
+             background-color: #555;
+             color: #ffffff;
+         }
+        #page span.disable{
+            border: 1px solid #aaa;
+            background-color: #fff;
+            color: #aaa;
+            cursor: default;
+        }
+        #page span.hide{
+            display: none;
+        }
+
+    </style>
+    <script src="js/base.js"></script>
+</head>
+<body>
+<div id="page">
+</div>
+<script>
+    window.onload = function () {
+        var page = new Page();
+        page.init();
+    }
+
+    function Page() {
+        this.num = 11;
+    }
+
+    //初始化
+    Page.prototype.init = function () {
+        var self = this;
+        self.pages = document.getElementById("page");
+        self.page_list = self.pages.getElementsByTagName("span");
+        self.current_page = 1;
+        self.createPages();
+        self.showPages();
+        for(var i = 1; i < self.num + 1; i ++){
+            (function (i) {
+                addEvent(self.page_list[i],"click",function () {
+                    self.current_page = i;
+                    self.showPages();
+                });
+            })(i)
+        }
+        //为上下页切添加事件
+        addEvent(self.prev_page,"click",function () {
+            if(self.current_page - 1 < 1){      //第一页时上一页不可用
+                return false;
+            } else{
+                self.current_page = self.current_page - 1;
+                self.showPages();
+            }
+        });
+        addEvent(self.next_page,"click",function () {
+            if(self.current_page + 1 > self.num){          //最后一页时下一页不可用
+                return false;
+            } else {
+                self.current_page = self.current_page + 1;
+                self.showPages();
+            }
+        });
+    }
+
+    //创建上下页和所有页表
+    Page.prototype.createPages = function () {
+        var self = this;
+                prev = document.createElement("span"),
+                next = document.createElement("span"),
+                prev_text = document.createTextNode("prev"),
+                next_text = document.createTextNode("next");
+        prev.appendChild(prev_text);
+        next.appendChild(next_text);
+        prev.id = "prev_page";   //为上下页添加id
+        next.id = "next_page";
+        self.pages.appendChild(prev);
+        self.pages.appendChild(next);
+        self.next_page = document.getElementById("next_page");
+        self.prev_page = document.getElementById("prev_page");
+        for(i = 1; i < self.num + 1; i ++){              //创建num个页数
+            var page = document.createElement("span"),
+                    page_text = document.createTextNode(i);
+            page.appendChild(page_text);
+            self.pages.insertBefore(page,self.next_page);
+        }
+        addClass(self.page_list[self.current_page],"current_page");
+    }
+
+    //合理显示页数
+    Page.prototype.showPages = function () {
+        var self = this;
+        var text1 = document.createTextNode("...");
+        var text2 = document.createTextNode("...");
+        //删除省略号
+        for(var i = 0; i < self.pages.childNodes.length; i ++){
+            if(self.pages.childNodes[i].nodeType == 3){
+                self.pages.removeChild(self.pages.childNodes[i]);
+            }
+        }
+        //先显示所有页数
+        for(var i = 1; i < self.num; i ++){
+            removeClass(self.page_list[i],"hide");
+        }
+        //当页数为1或num时相应上一页下一页按钮不可用
+        removeClass(self.next_page,"disable");
+        removeClass(self.prev_page,"disable");
+        if(self.current_page == 1){
+            addClass(self.prev_page,"disable");
+        }
+        if(self.current_page == self.num){
+            addClass(self.next_page,"disable");
+        }
+        //为当前页添加current_page类
+        for(var i = 1; i < self.num + 1; i ++){
+            removeClass(self.page_list[i],"current_page");
+        }
+        addClass(self.page_list[self.current_page],"current_page");
+        if(self.num <= 10){         //页数较少情况下不用隐藏部分页
+            return;
+        }
+        self.show_arr = [];    //应显示页数的数组
+        self.show_arr.push(self.page_list[0]);
+        self.show_arr.push(self.page_list[1]);
+        self.show_arr.push(self.page_list[self.num]);
+        self.show_arr.push(self.page_list[self.num + 1]);
+        if(self.current_page > 4 && self.current_page < self.num - 3 ){    //省略前后部分
+            for(var i = self.current_page - 2, j = self.current_page + 2; i <= j; i ++){
+                self.show_arr.push(self.page_list[i]);
+            }
+            self.pages.insertBefore(text1,self.page_list[self.num] );
+            self.pages.insertBefore(text2,self.page_list[1].nextSibling );
+        } else if(self.current_page <= 4){    //省略后面部分
+            for(var i = 2; i < 6; i ++){
+                self.show_arr.push(self.page_list[i]);
+            }
+            self.pages.insertBefore(text1,self.page_list[self.num] );
+        } else {                                                   //省略前面部分
+            for(var i = self.num - 4; i < self.num ; i ++){
+                self.show_arr.push(self.page_list[i]);
+            }
+            self.pages.insertBefore(text1,self.page_list[self.num-4] );
+        }
+        for(var i = 0; i < self.num + 2; i ++){           //根据数组显示相应页数
+            if(self.show_arr.indexOf(self.page_list[i]) == -1){
+                addClass(self.page_list[i],"hide");
+            }
+        }
+    }
+    
+</script>
+</body>
+</html>

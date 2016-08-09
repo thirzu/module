@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {  margin: 0;  padding: 0;  }
+        #banner{  width: 500px;  height: 500px;  margin: 10px auto;  border: 10px black solid;  position: relative;  overflow: hidden;  }
+        #main_banner{  width: 3000px; }
+        #banner ul,li{  list-style-type: none;  display: inline;  }
+        #banner li{  float: left;  display: inline;  }
+        #banner img{  width: 500px;  height: 500px; opacity: 0;  position: absolute;  }
+        #banner img.here{  opacity: 1;  }
+        #prev_img, #next_img{  color: white;  font-size: 1.5em;  width: 10%;  height: 10%;  background-color: #000;  position: absolute;  cursor: pointer;  opacity: 0.3;  }
+        #prev_img{  left: 0;  top: 45%;  }
+        #next_img{  right: 0;  top: 45%;  }
+        #point{  width: 100%;  position: absolute;  left: 0;  bottom: 0;  text-align: center;  }
+        #point span{  border-radius: 50%;  border: solid black 10px;  display: inline-block;  margin: 2%;  opacity: 0.3;  cursor: pointer;  }
+    </style>
+    <script src="js/jquery-3.0.0.min.js"></script>
+    <script src="js/base.js"></script>
+</head>
+<body>
+<div id="banner">
+    <ul id="main_banner">
+        <li><a href=""> <img src="images/IMG_0137.JPG" alt="" class="here"></a></li>
+        <li><a href=""><img src="images/IMG_0312.JPG" alt=""></a></li>
+        <li><a href=""><img src="images/IMG_0065.JPG" alt=""></a></li>
+        <li><a href=""><img src="images/IMG_0621.JPG" alt=""></a></li>
+    </ul>
+    <button id="prev_img"><<</button>
+    <button id="next_img">>></button>
+    <div id="point"></div>
+</div>
+<script>
+    function Banner() {}   //构造函数命名空间
+
+    //初始化操作
+    Banner.prototype.init = function () {
+        var self = this;
+        self.$img_list = $("#main_banner img");
+        self.img_length = self.$img_list.length;
+        self.target_num = 0;
+        self.current_num = 0;
+        //为图片和导航点添加data-num属性
+        for(var i = 0; i < self.img_length; i ++){
+            $($(self.$img_list)[i]).attr("data-num",i);   //图片data-num
+            //形成与图片数目相同的导航点并添加事件
+            $("<span></span>").appendTo("#point").attr("data-num",i).bind("click",function () {
+                self.target_num = parseInt(this.dataset.num);
+                self.move();
+            }).bind("mouseover",function () {
+               $(this).css("opacity","0.6");
+            }).bind("mouseout",function () {
+                $(this).css("opacity","0.3");
+            });
+        }
+        //默认情况下自动轮播图片
+        self.timer1 = setInterval(function () {
+            self.target_num += 1;
+            self.move();
+        },5000);
+        //给轮播整体添加鼠标事件
+        $("#banner").bind("mouseover",function () {
+            clearInterval(self.timer1);
+        });
+        $("#banner").bind("mouseout",function () {
+            clearInterval(self.timer1);
+            self.timer1 = setInterval(function () {  //重新自动轮播
+                self.target_num += 1;
+                self.move();
+            },5000);
+        });
+        //给前进后退按钮添加鼠标事件
+        $("#prev_img").bind("click",function () {   //播放上一张图片
+            if ($($(".here")[0]).css("opacity") == 1) {
+                self.target_num -= 1;
+                self.move();
+            }
+        }).bind("mouseover",function () {   //鼠标移入移出改变透明度
+            $(this).css("opacity","0.6");
+        }).bind("mouseout",function () {
+            $(this).css("opacity","0.3");
+        });
+        $("#next_img").bind("click",function () {       //播放下一张图片
+            if ($($(".here")[0]).css("opacity") == 1) {
+                self.target_num += 1;
+                self.move();
+            }
+        }).bind("mouseover",function () {  //鼠标移入移出改变透明度
+            $(this).css("opacity","0.6");
+        }).bind("mouseout",function () {
+            $(this).css("opacity","0.3");
+        });
+    }
+
+    //移动到目标图片
+    Banner.prototype.move = function () {
+        var self = this;
+        console.log(self.target_num);
+        //判断目标图片是否合法
+        if (self.target_num > self.img_length - 1) {
+            self.target_num = 0;
+        }
+        if (self.target_num < 0) {
+            self.target_num = self.img_length - 1;
+        }
+        if(self.current_num == self.target_num){    //如果相同什么都不干
+            return;
+        }
+        $(self.$img_list.get(self.current_num)).animate({    //动画改变透明度
+            opacity: 0
+        },2000)
+        $(self.$img_list.get(self.target_num)).animate({
+            opacity: 1
+        },2000);
+        self.$img_list.removeClass("here");
+        $(self.$img_list.get(self.target_num)).addClass("here");
+        self.current_num = self.target_num;
+    }
+
+    window.onload = function () {
+        var banner1 = new Banner();
+        banner1.init();
+    }
+</script>
+</body>
+</html>
