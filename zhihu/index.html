@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>知乎网站模仿</title>
+    <style type="text/css">
+        body{
+            font-family: "宋体",Arial,serif;
+            width:70%;
+            margin:0px auto;
+            padding:0px;
+        }
+        a{
+            color: black;
+            text-decoration: none;
+        }
+        #header{
+            color:white;
+            background: -moz-linear-gradient(top,#086ed5,#055db5);
+            background: -webkit-linear-gradient(top,#086ed5,#055db5);
+            background: -o-linear-gradient(top,#086ed5,#055db5);
+            border-bottom-color: #044e97;
+            position: fixed;
+            margin:0;
+            left:0;
+            top:0;
+            width:100%;
+            height: 45px;
+        }
+        header{
+            width:70%;
+            margin:0px auto;
+            padding:0px;
+            position:relative;
+        }
+        li{
+            list-style-type: none;
+        }
+        header ul,header li{
+            display: inline;
+            font-size: 15px;
+            margin:0px;
+            padding:10px;
+        }
+        header li a{
+            color:white;
+        }
+        #name,header img,button{
+            font-size: 15px;
+            float:right;
+            width:30px;
+            height:30px;
+            margin:3px;
+            padding:0px;
+            position:relative;
+            top:5px;
+            line-height: 20px;
+        }
+        header span{
+            font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+            font-size:30px;
+        }
+        button{
+            border-radius: 5px;
+            border-width: 1px;
+            border-color: #111;
+            font-family:"华文新魏","宋体",sans-serif;
+            color:#fff;
+            height:35px;
+            width:60px;
+            background-color: rgb(25, 130, 250);
+            margin:0px 30px;
+            padding:0px;
+            float:right;
+        }
+        input{
+            width:300px;
+            height:28px;
+            font-size:13px;
+            margin:0px;
+            padding:0px;
+            background-color: #eee;
+            border-radius: 4px;
+            position:relative;
+            top:-3px;
+        }
+        #left{
+            width:63%;
+            float: left;
+            margin: 45px 0px 0px 0px;
+        }
+        #subTitle{
+            padding:15px 0px;
+        }
+        #subTitle a{
+            font-size: 13px;
+            color:#aaa;
+        }
+        a#latest{
+            float:left;
+            color:#000;
+            font-size: 15px;
+        }
+        #setting{
+            float:right;
+        }
+        hr{
+            clear: both;
+        }
+        #recommend{
+            font-size: 13px;
+            margin:auto;
+            padding:10px;
+            line-height: 20px;
+            width: 90%;
+        }
+        #recommend section{
+            border:2px solid #eee;
+            margin:0px;
+            padding:10px 30px 30px 10px;
+            margin-left: -2px;
+            width: 25%;
+            height: 130px;
+            float:left;
+            position:relative;
+            z-index: -1;
+        }
+        #recommend section strong{
+            color:navy
+        }
+        #recommend p{
+            text-align:center;
+        }
+        #recommend p a{
+            color: navy;
+        }
+        .sign{
+            clear: both;
+            float: left;
+            margin:10px 0px;
+        }
+        #recommend img{
+            float:left;
+            margin:0px 15px 15px 0px;
+        }
+        #recommend hr{
+            margin:10px 0px;
+            color:#eee;
+        }
+        #recommend button{
+            background: -moz-linear-gradient(top,greenyellow,limegreen);
+            background: -webkit-linear-gradient(top,greenyellow,limegreen);
+            background: -o-linear-gradient(top,greenyellow,limegreen);
+            border-bottom-color:rgb(4, 91, 178);
+            border-radius: 3px;
+            height:20px;
+            width:60px;
+            position: absolute;
+            left:110px;
+            top: 145px;
+            margin:0px;
+            padding:0px;
+            color:black;
+            font-family: "宋体",Arial,serif;
+            font-size: 13px;
+        }
+        #content{
+            margin:200px 0px 0px 0px;
+            font-size: 14px;
+        }
+        #content section{
+            margin:20px 0px;
+            padding:0px;
+        }
+        #content hr{
+            color:#eee;
+        }
+        .headImg{
+            float:left;
+            width: 10%;
+        }
+        .headImg img{
+            border-radius: 4px;
+        }
+        .headImg span{
+            display: inline-block;
+            width: 35px;
+            height:20px;
+            background-color: lightblue;
+            line-height: 20px;
+            text-align: center;
+            margin:5px;
+            opacity: 0.5;
+            color: navy;
+            border-radius: 2px;
+        }
+        .words{
+            float:left;
+            width: 90%;
+        }
+        .articleInfo{
+            margin:0px 10px;
+            line-height: 25px;
+            color: #aaa;
+        }
+        #content strong{
+            font-size: 16px;
+            color: navy;
+        }
+        .words img{
+            float:left;
+            border-radius: 5px;
+            margin:0px 10px 10px 0px;
+        }
+        .words p{
+            clear:both;
+        }
+        .more a{
+            color: #aaa;
+        }
+        #right{
+            width:30%;
+            float: right;
+            margin: 75px 0px 0px 0px;
+            font-size: 15px;
+        }
+        #right a{
+            color:#777;
+        }
+        #right img{
+            border-radius: 5px;
+        }
+        #right ul{
+            margin:10px 0px;
+            padding:0px;
+        }
+        #right li{
+            margin:0px;
+            padding:5px 0px;
+        }
+        #arrow{
+            width:50px;
+            height:50px;
+            background-color: #777;
+            border-radius: 2px;
+            position:fixed;
+            right: 30%;
+            bottom: 10%;
+            margin:0px:
+            padding:0px;
+        }
+        #triangle{
+            border-bottom: solid 10px #eee;
+            border-top: solid 5px #eee;
+            border-left: solid 5px rgba(255,255,255,0);
+            border-right: solid 5px rgba(255,255,255,0);
+            margin:auto;
+        }
+/*
+        #subHeader{
+            display: none;
+            position:absolute;
+            top:70px;
+            left:550px;
+            background-color: #eee;
+
+        }
+        #subtitle{
+            display:inline;
+            padding: 10px;
+            margin:100px;
+        }
+
+        section img{
+            margin:10px;
+        }
+        
+        */
+    </style>
+</head>
+<body>
+  <div id="header">
+  <header>
+      <a href="images/liukanshan2.png"></a>
+      <input name="search" type="text" placeholder=" 搜索你感兴趣的内容……" >
+      <button id="search"></button>
+      <ul>
+          <li><a href="#">首页</a></li>
+          <li><a href="#">话题</a></li>
+          <li><a href="#">发现</a></li>
+          <li><a href="#">消息</a></li>
+      </ul>
+      <span id="name">XXX</span>
+      <img src="images/touxiang.jpg" alt="头像" width="30px" height="30px">
+      <button>提问</button>
+  </header>
+  </div>
+  <div id="left">
+  <div id="subTitle">
+      <p><a id="latest"><img src="" alt="小图标"><strong>最新动态</strong></a><a id="setting"><img src="" alt="小图标">设置</a></p>
+  </div>
+  <hr>
+  <div id="recommend">
+      <p>你的首页暂时还没有内容，多关注一些人把<a href="#">换一批</a></p>
+      <section>
+          <img src="images/01.jpg" width="50px" height="50px" ><strong>XXX</strong><br>716个回答<br>
+          <span class="sign">我们都是虫子</span>
+          <hr>
+          音乐领域活跃用户
+          <button>关注</button>
+      </section>
+      <section>
+          <img src="images/02.jpg" width="50px" height="50px" ><strong>XXX</strong><br>716个回答<br>
+          <span class="sign">营销是沟通的修行</span>
+          <hr>
+          商业领域活跃用户
+          <button>关注</button>
+      </section>
+      <section>
+          <img src="images/03.jpg" width="50px" height="50px" ><strong>XXX</strong><br>69个回答<br>
+          <span class="sign">让思考成为一种习惯</span>
+          <hr>
+          篮球领域活跃用户
+          <button>关注</button>
+      </section>
+  </div>
+  <div id="content">
+      <section>
+          <div class="headImg">
+              <img src="images/04.jpeg" width="50px" height="50px" alt="用户头像"><br>
+              <span>185</span>
+          </div>
+          <div class="words">
+              <p class="articleInfo">XXX在&nbsp;<span>XXXXXXXXX</span>&nbsp;中发布了文章<br><a href="#"><strong>这里是标题这里是标题</strong></a></p>
+              <p><img src="images/photo.jpg" width="200px" height="120px">这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字
+                  这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字……</p>
+              <p class="more"><a href="#">取消关注</a>&nbsp;<a href="#">51条评论</a></p>
+          </div>
+      </section>
+      <hr>
+      <section>
+          <div class="headImg">
+              <img src="images/04.jpeg" width="50px" height="50px" alt="用户头像"><br>
+              <span>185</span>
+          </div>
+          <div class="words">
+              <p class="articleInfo">XXX在&nbsp;<span>XXXXXXXXX</span>&nbsp;中发布了文章<br><a href="#"><strong>这里是标题这里是标题</strong></a></p>
+              <p><img src="images/liukanshan.png" width="200px" height="120px">这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字
+                  这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字……</p>
+              <p class="more"><a href="#">取消关注</a>&nbsp;<a href="#">51条评论</a></p>
+          </div>
+      </section>
+      <hr>
+      <section>
+          <div class="headImg">
+              <img src="images/04.jpeg" width="50px" height="50px" alt="用户头像"><br>
+              <span>185</span>
+          </div>
+          <div class="words">
+              <p class="articleInfo">XXX在&nbsp;<span>XXXXXXXXX</span>&nbsp;中发布了文章<br><a href="#"><strong>这里是标题这里是标题</strong></a></p>
+              <p><img src="images/photo.jpg" width="200px" height="120px">这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字
+                  这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字……</p>
+              <p class="more"><a href="#">取消关注</a>&nbsp;<a href="#">51条评论</a></p>
+          </div>
+      </section>
+      <hr>
+      <section>
+          <div class="headImg">
+              <img src="images/04.jpeg" width="50px" height="50px" alt="用户头像"><br>
+              <span>185</span>
+          </div>
+          <div class="words">
+              <p class="articleInfo">XXX在&nbsp;<span>XXXXXXXXX</span>&nbsp;中发布了文章<br><a href="#"><strong>这里是标题这里是标题</strong></a></p>
+              <p><img src="images/liukanshan.png" width="200px" height="120px">这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字
+                  这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字……</p>
+              <p class="more"><a href="#">取消关注</a>&nbsp;<a href="#">51条评论</a></p>
+          </div>
+      </section>
+      <hr>
+      <section>
+          <div class="headImg">
+              <img src="images/04.jpeg" width="50px" height="50px" alt="用户头像"><br>
+              <span>185</span>
+          </div>
+          <div class="words">
+              <p class="articleInfo">XXX在&nbsp;<span>XXXXXXXXX</span>&nbsp;中发布了文章<br><a href="#"><strong>这里是标题这里是标题</strong></a></p>
+              <p><img src="images/photo.jpg" width="200px" height="120px">这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字
+                  这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字……</p>
+              <p class="more"><a href="#">取消关注</a>&nbsp;<a href="#">51条评论</a></p>
+          </div>
+      </section>
+      <hr>
+      </div>
+  </div>
+<div id="right">
+      <img src="images/post.png" alt="post" id="post">
+      <ul>
+          <li><a href="#">我的草稿</a></li>
+          <li><a href="#">我的收藏</a></li>
+          <li><a href="#">我关注的问题</a></li>
+          <li><a href="#">邀请我回答的问题</a></li>
+      </ul>
+      <hr>
+      <ul>
+          <li><a href="#">话题广场</a></li>
+          <li><a href="#">公共编辑动态</a></li>
+          <li><a href="#">社区服务中心</a></li>
+      </ul>
+      <hr>
+      <strong>知乎专栏</strong>
+      <ul>
+          <li><a href="#">专栏·发现</a></li>
+          <li><a href="#">写文章</a></li>
+      </ul>
+  </div>
+<div id="arrow">
+    <div id="triangle"></div>
+    <div id="square"></div>
+</div>
+</body>
+</html>
