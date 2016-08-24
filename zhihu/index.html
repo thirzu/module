@@ -1,18 +1,37 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>知乎网站模仿</title>
     <style type="text/css">
         body{
-            font-family: "宋体",Arial,serif;
-            width:70%;
-            margin:0px auto;
-            padding:0px;
+            font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+            margin:0;
+            padding:0;
         }
         a{
             color: black;
             text-decoration: none;
+        }
+        ul li{
+            list-style-type: none;
+        }
+        hr{
+            height: 1px;
+            border:none;
+            border-top: solid 1px #ddd;
+            margin: 12px 0;
+            clear: both;
+        }
+        #latest::before,#setting::before,.comment::before,#right li::before{
+            content: "";
+            width: 16px;
+            height: 16px;
+            display: inline-block;
+            vertical-align: middle;
+            background-image: url("images/icon.png");
+            margin: 0 5px 0 0;
         }
         #header{
             color:white;
@@ -28,216 +47,346 @@
             height: 45px;
         }
         header{
-            width:70%;
-            margin:0px auto;
-            padding:0px;
+            max-width: 960px;
+            margin:0 auto;
+            padding:0;
             position:relative;
         }
-        li{
-            list-style-type: none;
+        header>a:nth-child(1){
+            position: absolute;
+            top: 8px;
+            left: 0;
+            z-index: 99;
         }
-        header ul,header li{
-            display: inline;
-            font-size: 15px;
-            margin:0px;
-            padding:10px;
+        #search-box,header ul,header li{
+            display: inline-block;
+            line-height: 45px;
+            margin: 0;
+            padding: 0;
+            float: left;
+        }
+        #search-box{
+            display: inline-block;
+            position: relative;
+            width:367px;
+            height: 45px;
+            margin-left: 71px;
+        }
+        #search-box input{
+            color: #49525c;
+            background-color: #e1eaf2;
+            width: 100%;
+            height: 31px;
+            padding:0;
+            position: absolute;
+            top: 7px;
+            right: 0;
+            font-size:14px;
+            line-height: 17px;
+            border-radius: 4px;
+            border:1px solid #045bb2;
+            -webkit-box-shadow: inset 0 1px 3px rgba(0,0,0,.2),0 1px 0 rgba(255,255,255,.1);
+            -moz-box-shadow: inset 0 1px 3px rgba(0,0,0,.2),0 1px 0 rgba(255,255,255,.1);
+            box-shadow: inset 0 1px 3px rgba(0,0,0,.2),0 1px 0 rgba(255,255,255,.1);
+        }
+        #search-box button{
+            border-radius: 4px;
+            border:1px solid #045bb2;
+            position: absolute;
+            top: 6px;
+            right: 0;
+            width:40px;;
+            height: 35px;
+            background: -moz-linear-gradient(to bottom,#0e7bef,#0d73da);
+            background: -webkit-linear-gradient(to bottom,#0e7bef,#0d73da);
+            background: -o-linear-gradient(to bottom,#0e7bef,#0d73da);
+        }
+        #search-box button span{
+            display: inline-block;
+            vertical-align: middle;
+            width: 15px;
+            height: 15px;
+            background-image: url(images/icon3.png);
+            background-position: -82px 0;
+        }
+        header ul{
+            margin: 0 0 0 18px;
+        }
+        header li{
+            text-align: center;
+            font-size: 14px;
+            width: 54px;
+            height: 45px;
         }
         header li a{
             color:white;
         }
-        #name,header img,button{
-            font-size: 15px;
+        #user,#user+button{
+            display: inline-block;
+            line-height: 45px;
+            font-size: 14px;
             float:right;
-            width:30px;
-            height:30px;
-            margin:3px;
-            padding:0px;
-            position:relative;
-            top:5px;
-            line-height: 20px;
+            color: white;
         }
-        header span{
-            font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
-            font-size:30px;
+        #user img{
+            vertical-align: middle;
+            width: 25px;
+            height: 25px;
+            margin:0 10px;
         }
-        button{
-            border-radius: 5px;
-            border-width: 1px;
-            border-color: #111;
-            font-family:"华文新魏","宋体",sans-serif;
-            color:#fff;
-            height:35px;
-            width:60px;
-            background-color: rgb(25, 130, 250);
-            margin:0px 30px;
-            padding:0px;
-            float:right;
-        }
-        input{
-            width:300px;
-            height:28px;
-            font-size:13px;
-            margin:0px;
-            padding:0px;
-            background-color: #eee;
+        #user+button{
             border-radius: 4px;
-            position:relative;
-            top:-3px;
+            width: 66px;
+            height: 35px;
+            border:1px solid #045bb2;
+            line-height: 25px;
+            margin: 5px 20px 0 0;
+            background: -moz-linear-gradient(to bottom,#0e7bef,#0d73da);
+            background: -webkit-linear-gradient(to bottom,#0e7bef,#0d73da);
+            background: -o-linear-gradient(to bottom,#0e7bef,#0d73da);
+        }
+        #main{
+            max-width: 960px;
+            margin: 70px auto;
+        }
+        #left,#right{
+            font-size: 13px;
+            color: #666;
         }
         #left{
-            width:63%;
             float: left;
-            margin: 45px 0px 0px 0px;
+            margin: 0 328px 0 0;
+        }
+        #left a:hover{
+            text-decoration: underline;
         }
         #subTitle{
-            padding:15px 0px;
-        }
-        #subTitle a{
-            font-size: 13px;
-            color:#aaa;
-        }
-        a#latest{
-            float:left;
-            color:#000;
-            font-size: 15px;
-        }
-        #setting{
-            float:right;
-        }
-        hr{
-            clear: both;
-        }
-        #recommend{
-            font-size: 13px;
-            margin:auto;
-            padding:10px;
-            line-height: 20px;
-            width: 90%;
-        }
-        #recommend section{
-            border:2px solid #eee;
-            margin:0px;
-            padding:10px 30px 30px 10px;
-            margin-left: -2px;
-            width: 25%;
-            height: 130px;
-            float:left;
-            position:relative;
-            z-index: -1;
-        }
-        #recommend section strong{
-            color:navy
-        }
-        #recommend p{
-            text-align:center;
-        }
-        #recommend p a{
-            color: navy;
-        }
-        .sign{
-            clear: both;
-            float: left;
-            margin:10px 0px;
-        }
-        #recommend img{
-            float:left;
-            margin:0px 15px 15px 0px;
-        }
-        #recommend hr{
-            margin:10px 0px;
-            color:#eee;
-        }
-        #recommend button{
-            background: -moz-linear-gradient(top,greenyellow,limegreen);
-            background: -webkit-linear-gradient(top,greenyellow,limegreen);
-            background: -o-linear-gradient(top,greenyellow,limegreen);
-            border-bottom-color:rgb(4, 91, 178);
-            border-radius: 3px;
-            height:20px;
-            width:60px;
-            position: absolute;
-            left:110px;
-            top: 145px;
-            margin:0px;
-            padding:0px;
-            color:black;
-            font-family: "宋体",Arial,serif;
-            font-size: 13px;
-        }
-        #content{
-            margin:200px 0px 0px 0px;
+            width: 100%;
+            height: 10px;
+            margin: 10px 0;
             font-size: 14px;
         }
-        #content section{
-            margin:20px 0px;
-            padding:0px;
+        #latest::before{
+            background-position: -71px -88px;
         }
-        #content hr{
-            color:#eee;
+        #latest{
+            float: left;
+            font-weight: 700;
+        }
+        #setting::before{
+            background-position: -88px -148px;
+        }
+        #setting{
+            float: right;
+        }
+        #setting a{
+            color: #666;
+        }
+        #subTitle span{
+            display: inline-block;
+            float: right;
+            height: 16px;
+            line-height: 16px;
+        }
+        #left p{
+            text-align: center;
+        }
+        #left p a{
+            font-size: 12px;
+            color: #698ebf;
+            margin: 5px;
+        }
+        #recommend{
+            width: 100%;
+            height: 180px;
+            border:solid 1px #ddd;
+            border-radius: 4px;
+            color: #999;
+            margin: 0 0 30px 0;
+        }
+        #recommend section{
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            border:;
+            width: 33.3%;
+            height: 100%;
+            display: inline-block;
+            float: left;
+            border-right:solid 1px #ddd;
+        }
+        #recommend  section:last-child{
+            border-right: none;
+        }
+        .recommend-user{
+            margin: 12px 15px;
+        }
+        #recommend section img{
+            width: 40px;
+            height: 40px;
+            border-right: 3px;
+        }
+        .user-info{
+            display: inline-block;
+            margin-left: 12px;
+            line-height: 20px;
+        }
+        .user-info a{
+            color: #259;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .sign{
+            margin: 12px 0;
+        }
+        #recommend section button{
+            font-size: 12px;
+            color: #3e5e00;
+            display: block;
+            width: 78px;
+            height: 24px;
+            background: -moz-linear-gradient(to bottom,#adda4d,#86b846);
+            background: -webkit-linear-gradient(to bottom,#adda4d,#86b846);
+            background: -o-linear-gradient(to bottom,#adda4d,#86b846);
+            border: 1px solid #6d8f29;
+            border-radius: 3px;
+            float: right;
+            margin: 10px 0;
+        }
+        #content section{
+            margin: 10px 0;
+            color: #999;
+        }
+        .headImg img{
+            width: 38px;
+            height: 38px;
+            border-radius: 4px;
+        }
+        .main-article img{
+            width: 200px;
+            height: 112px;
+            border-radius: 4px;
+            margin: 1px 10px 5px 0;
+            float: left;
         }
         .headImg{
             float:left;
-            width: 10%;
-        }
-        .headImg img{
-            border-radius: 4px;
+            width: 38px;
         }
         .headImg span{
             display: inline-block;
-            width: 35px;
-            height:20px;
-            background-color: lightblue;
-            line-height: 20px;
+            width: 38px;
+            height:24px;
+            background-color: #eff6fa;
+            line-height: 24px;
             text-align: center;
-            margin:5px;
-            opacity: 0.5;
-            color: navy;
-            border-radius: 2px;
+            margin:5px 0;
+            color: #698ebf;
+            border-radius: 3px;
         }
-        .words{
-            float:left;
-            width: 90%;
+        #content article{
+            margin: 0 0 0 48px;
         }
-        .articleInfo{
-            margin:0px 10px;
-            line-height: 25px;
-            color: #aaa;
+        .article-info{
+            line-height: 1.7;
         }
-        #content strong{
-            font-size: 16px;
-            color: navy;
+        .article-info a{
+            margin: 0 5px;
+            color: #999;
         }
-        .words img{
-            float:left;
-            border-radius: 5px;
-            margin:0px 10px 10px 0px;
+        .comment::before{
+            width: 9px;
+            height: 10px;
+            background-position: -28px -22px;
         }
-        .words p{
-            clear:both;
+        .article-title{
+            color: #259;
+            font-weight:700;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+        .main-article{
+            margin: 5px 0;
+        }
+        #content article p{
+            text-align: left;
+            margin: 0;
+        }
+        .more {
+            clear: both;
+            margin: 10px 0;
         }
         .more a{
-            color: #aaa;
+            color: #999;
+            margin-right: 10px;
         }
         #right{
-            width:30%;
+            width: 270px;
             float: right;
-            margin: 75px 0px 0px 0px;
-            font-size: 15px;
+            margin-left: -270px;
+          }
+        #right img{
+            border-radius: 6px;
         }
         #right a{
-            color:#777;
-        }
-        #right img{
-            border-radius: 5px;
+            color: #666;
         }
         #right ul{
-            margin:10px 0px;
-            padding:0px;
+            margin: 0;
+            padding: 0;
         }
         #right li{
-            margin:0px;
-            padding:5px 0px;
+            padding:5px 0;
+            line-height:1.7;
         }
+        #right ul:nth-child(2) li:nth-child(1)::before{
+            background-position: -167px -4px;
+        }
+        #right ul:nth-child(2) li:nth-child(2)::before{
+            background-position: -183px -4px;
+        }
+        #right ul:nth-child(2) li:nth-child(3)::before{
+             background-position: -200px -4px;
+         }
+        #right ul:nth-child(4) li:nth-child(1)::before{
+            background-position: -234px -4px;
+        }
+        #right ul:nth-child(4) li:nth-child(2)::before{
+            background-position: -269px -4px;
+        }
+        #right ul:nth-child(4) li:nth-child(3)::before{
+            width: 13px;
+            height: 14px;
+            background-image: url("images/icon4.png");
+            background-position: -24px -41px;
+        }
+        #right ul:nth-child(7) li:nth-child(1)::before{
+            width: 25px;
+            height: 25px;
+            background-image: url("images/icon2.png");
+            background-position: 0 0;
+        }
+        #column{
+            display: inline-block;
+            margin: 10px 0;
+            font-weight:700;
+        }
+        @media screen and (max-width:768px) {
+            #left{
+                float: left;
+                max-width: 100%;
+                margin: 5px;
+            }
+            #right{
+                margin: 5px;
+                float: left
+
+            }
+        }
+
+
+
+/*
         #arrow{
             width:50px;
             height:50px;
@@ -256,24 +405,6 @@
             border-right: solid 5px rgba(255,255,255,0);
             margin:auto;
         }
-/*
-        #subHeader{
-            display: none;
-            position:absolute;
-            top:70px;
-            left:550px;
-            background-color: #eee;
-
-        }
-        #subtitle{
-            display:inline;
-            padding: 10px;
-            margin:100px;
-        }
-
-        section img{
-            margin:10px;
-        }
         
         */
     </style>
@@ -281,141 +412,169 @@
 <body>
   <div id="header">
   <header>
-      <a href="images/liukanshan2.png"></a>
+      <a href="#"><img src="images/zhihulogo.png" alt="知乎logo"></a>
+      <div id="search-box">
       <input name="search" type="text" placeholder=" 搜索你感兴趣的内容……" >
-      <button id="search"></button>
+      <button><span></span></button>
+      </div>
       <ul>
           <li><a href="#">首页</a></li>
           <li><a href="#">话题</a></li>
           <li><a href="#">发现</a></li>
           <li><a href="#">消息</a></li>
       </ul>
-      <span id="name">XXX</span>
+      <div id="user">
       <img src="images/touxiang.jpg" alt="头像" width="30px" height="30px">
+          <span id="user-name">XXX</span>
+      </div>
       <button>提问</button>
   </header>
   </div>
+  <div id="main">
   <div id="left">
   <div id="subTitle">
-      <p><a id="latest"><img src="" alt="小图标"><strong>最新动态</strong></a><a id="setting"><img src="" alt="小图标">设置</a></p>
+      <div id="latest"><span>最新动态</span></div><div id="setting"><span><a href="#">设置</a></span></div>
   </div>
   <hr>
-  <div id="recommend">
       <p>你的首页暂时还没有内容，多关注一些人把<a href="#">换一批</a></p>
+      <div id="recommend">
       <section>
-          <img src="images/01.jpg" width="50px" height="50px" ><strong>XXX</strong><br>716个回答<br>
-          <span class="sign">我们都是虫子</span>
-          <hr>
-          音乐领域活跃用户
-          <button>关注</button>
+          <div class="recommend-user">
+              <img src="images/01.jpg">
+              <div class="user-info"><a href="#">XXX</a> <br>716个回答</div>
+              <div class="sign">我们都是虫子</div>
+              <hr>
+              <div class="tag">音乐领域活跃用户</div>
+              <button>关注</button>
+          </div>
       </section>
       <section>
-          <img src="images/02.jpg" width="50px" height="50px" ><strong>XXX</strong><br>716个回答<br>
-          <span class="sign">营销是沟通的修行</span>
-          <hr>
-          商业领域活跃用户
-          <button>关注</button>
+          <div class="recommend-user">
+              <img src="images/02.jpg">
+              <div class="user-info"><a href="#">XXX</a>  <br>716个回答</div>
+              <div class="sign">营销是沟通的修行</div>
+              <hr>
+              <div class="tag">商业领域活跃用户</div>
+              <button>关注</button>
+          </div>
       </section>
       <section>
-          <img src="images/03.jpg" width="50px" height="50px" ><strong>XXX</strong><br>69个回答<br>
-          <span class="sign">让思考成为一种习惯</span>
-          <hr>
-          篮球领域活跃用户
-          <button>关注</button>
+          <div class="recommend-user">
+              <img src="images/03.jpg">
+              <div class="user-info"><a href="#">XXX</a> <br>716个回答</div>
+              <div class="sign">让思考成为一种习惯</div>
+              <hr>
+              <div class="tag">篮球领域活跃用户</div>
+              <button>关注</button>
+          </div>
       </section>
   </div>
   <div id="content">
       <section>
           <div class="headImg">
-              <img src="images/04.jpeg" width="50px" height="50px" alt="用户头像"><br>
+              <img src="images/04.jpeg" alt="用户头像">
               <span>185</span>
           </div>
-          <div class="words">
-              <p class="articleInfo">XXX在&nbsp;<span>XXXXXXXXX</span>&nbsp;中发布了文章<br><a href="#"><strong>这里是标题这里是标题</strong></a></p>
-              <p><img src="images/photo.jpg" width="200px" height="120px">这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字
-                  这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字……</p>
-              <p class="more"><a href="#">取消关注</a>&nbsp;<a href="#">51条评论</a></p>
-          </div>
+          <article>
+              <div class="article-info">XXX在&nbsp;<a href="#">XXXXXXXXX</a>&nbsp;中发布了文章</div>
+              <a href="#" class="article-title">这里是标题这里是标题</a>
+              <div class="main-article">
+              <img src="images/photo.jpg">
+                  <p>这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字……</p>
+              <div class="more"><a href="#">取消关注</a><a href="#" class="comment">51条评论</a></div>
+                  </div>
+              </article>
       </section>
       <hr>
       <section>
           <div class="headImg">
-              <img src="images/04.jpeg" width="50px" height="50px" alt="用户头像"><br>
+              <img src="images/04.jpeg" alt="用户头像">
               <span>185</span>
           </div>
-          <div class="words">
-              <p class="articleInfo">XXX在&nbsp;<span>XXXXXXXXX</span>&nbsp;中发布了文章<br><a href="#"><strong>这里是标题这里是标题</strong></a></p>
-              <p><img src="images/liukanshan.png" width="200px" height="120px">这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字
-                  这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字……</p>
-              <p class="more"><a href="#">取消关注</a>&nbsp;<a href="#">51条评论</a></p>
-          </div>
+          <article>
+              <div class="article-info">XXX在&nbsp;<a href="#">XXXXXXXXX</a>&nbsp;中发布了文章</div>
+              <a href="#" class="article-title">这里是标题这里是标题</a>
+              <div class="main-article">
+                  <img src="images/liukanshan.png">
+                  <p>这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字……</p>
+                  <div class="more"><a href="#">取消关注</a><a href="#" class="comment">51条评论</a></div>
+              </div>
+          </article>
       </section>
       <hr>
       <section>
           <div class="headImg">
-              <img src="images/04.jpeg" width="50px" height="50px" alt="用户头像"><br>
+              <img src="images/04.jpeg" alt="用户头像">
               <span>185</span>
           </div>
-          <div class="words">
-              <p class="articleInfo">XXX在&nbsp;<span>XXXXXXXXX</span>&nbsp;中发布了文章<br><a href="#"><strong>这里是标题这里是标题</strong></a></p>
-              <p><img src="images/photo.jpg" width="200px" height="120px">这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字
-                  这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字……</p>
-              <p class="more"><a href="#">取消关注</a>&nbsp;<a href="#">51条评论</a></p>
-          </div>
+          <article>
+              <div class="article-info">XXX在&nbsp;<a href="#">XXXXXXXXX</a>&nbsp;中发布了文章</div>
+              <a href="#" class="article-title">这里是标题这里是标题</a>
+              <div class="main-article">
+                  <img src="images/photo.jpg">
+                  <p>这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字……</p>
+                  <div class="more"><a href="#">取消关注</a><a href="#" class="comment">51条评论</a></div>
+              </div>
+          </article>
       </section>
       <hr>
       <section>
           <div class="headImg">
-              <img src="images/04.jpeg" width="50px" height="50px" alt="用户头像"><br>
+              <img src="images/04.jpeg" alt="用户头像">
               <span>185</span>
           </div>
-          <div class="words">
-              <p class="articleInfo">XXX在&nbsp;<span>XXXXXXXXX</span>&nbsp;中发布了文章<br><a href="#"><strong>这里是标题这里是标题</strong></a></p>
-              <p><img src="images/liukanshan.png" width="200px" height="120px">这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字
-                  这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字……</p>
-              <p class="more"><a href="#">取消关注</a>&nbsp;<a href="#">51条评论</a></p>
-          </div>
+          <article>
+              <div class="article-info">XXX在&nbsp;<a href="#">XXXXXXXXX</a>&nbsp;中发布了文章</div>
+              <a href="#" class="article-title">这里是标题这里是标题</a>
+              <div class="main-article">
+                  <img src="images/liukanshan.png">
+                  <p>这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字……</p>
+                  <div class="more"><a href="#">取消关注</a><a href="#" class="comment">51条评论</a></div>
+              </div>
+          </article>
       </section>
       <hr>
       <section>
           <div class="headImg">
-              <img src="images/04.jpeg" width="50px" height="50px" alt="用户头像"><br>
+              <img src="images/04.jpeg" alt="用户头像">
               <span>185</span>
           </div>
-          <div class="words">
-              <p class="articleInfo">XXX在&nbsp;<span>XXXXXXXXX</span>&nbsp;中发布了文章<br><a href="#"><strong>这里是标题这里是标题</strong></a></p>
-              <p><img src="images/photo.jpg" width="200px" height="120px">这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字
-                  这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字……</p>
-              <p class="more"><a href="#">取消关注</a>&nbsp;<a href="#">51条评论</a></p>
-          </div>
+          <article>
+              <div class="article-info">XXX在&nbsp;<a href="#">XXXXXXXXX</a>&nbsp;中发布了文章</div>
+              <a href="#" class="article-title">这里是标题这里是标题</a>
+              <div class="main-article">
+                  <img src="images/photo.jpg">
+                  <p>这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字……</p>
+                  <div class="more"><a href="#">取消关注</a><a href="#" class="comment">51条评论</a></div>
+              </div>
+          </article>
       </section>
       <hr>
       </div>
   </div>
 <div id="right">
-      <img src="images/post.png" alt="post" id="post">
+      <img src="images/post.png" alt="post">
       <ul>
-          <li><a href="#">我的草稿</a></li>
-          <li><a href="#">我的收藏</a></li>
-          <li><a href="#">我关注的问题</a></li>
-          <li><a href="#">邀请我回答的问题</a></li>
+          <li class="icon-collect"><a href="#">我的收藏</a></li>
+          <li class="icon-attention"><a href="#">我关注的问题</a></li>
+          <li class="icon-invite"><a href="#">邀请我回答的问题</a></li>
       </ul>
       <hr>
       <ul>
-          <li><a href="#">话题广场</a></li>
-          <li><a href="#">公共编辑动态</a></li>
-          <li><a href="#">社区服务中心</a></li>
+          <li class="icon-topic"><a href="#">话题广场</a></li>
+          <li class="icon-public"><a href="#">公共编辑动态</a></li>
+          <li class="icon-service"><a href="#">社区服务中心</a></li>
       </ul>
       <hr>
-      <strong>知乎专栏</strong>
+      <span id="column">知乎专栏</span>
       <ul>
-          <li><a href="#">专栏·发现</a></li>
-          <li><a href="#">写文章</a></li>
+          <li class="icon-discover"><a href="#">专栏·发现</a></li>
       </ul>
   </div>
 <div id="arrow">
     <div id="triangle"></div>
     <div id="square"></div>
 </div>
+  </div>
 </body>
 </html>
